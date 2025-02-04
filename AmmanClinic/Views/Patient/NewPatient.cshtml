@@ -1,0 +1,81 @@
+﻿@model vmPatient
+@inject IConfiguration _config
+
+@{
+    ViewData["Title"] = "NewPatient";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <input type="hidden" class="form-control" asp-for="Patient.Id">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control" asp-for="Patient.FirstName" placeholder="patient first name">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control" asp-for="Patient.LastName" placeholder="patient last name">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Patient.Gender" value="Male">
+            <label class="form-check-label">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="Patient.Gender" value="Female">
+            <label class="form-check-label">Female</label>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input type="text" class="form-control" asp-for="Patient.Phone" placeholder="patient phone no.">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" asp-for="Patient.Email" placeholder="patient email">
+    </div>
+    <input type="hidden" asp-for="Patient.ProfileName" />
+    <div class="mb-3">
+        @if (Model.Patient != null)
+        {
+            @if (Model.Patient.ProfileName != null)
+            {
+                <div>
+                    <img src='~/@_config["ImageForlderName"]/@Model.Patient.ProfileName' style="width:80px">
+                </div>
+            }
+        }
+
+        <label class="btn btn-primary" for="fuImage">Upload Image</label>
+        <input type="file" asp-for="Patient.Image" style="display:none" id="fuImage" />
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Country</label>
+        <select class="form-select" asp-for="Patient.Country_Id">
+            <option selected>select country</option>
+            @foreach (CountryDTO item in Model.liCountry)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+
+        </select>
+    </div>
+    <div class="mb-3">
+
+        @if ((bool)ViewData["IsEdit"] == false)
+        {
+            <input type="submit" value="Save" class="btn btn-primary" asp-action="Save" />
+        }
+        else
+        {
+            <input type="submit" value="Update" class="btn btn-primary" asp-action="Update" />
+        }
+    </div>
+</form>

@@ -1,0 +1,46 @@
+﻿@model List<PatientDTO>
+@inject IConfiguration _config
+
+@{
+    ViewData["Title"] = "PatientList";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" placeholder="patient name" name="txtFirstName">
+        <input type="submit" value="Search" class="btn btn-primary" asp-action="Search" />
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Country</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PatientDTO item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src='~/@_config["ImageForlderName"]/@item.ProfileName' style="width:80px">
+
+                    </td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.Phone</td>
+                    <td>@item.country.Name</td>
+                    <td>
+                        <input type="submit" value="Edit" asp-action="Edit" class="btn btn-danger" asp-route-Id="@item.Id">
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</form>
+
